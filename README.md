@@ -45,7 +45,16 @@ FineTuner::fineTune(string $fileId, string $model = 'gpt-3.5-turbo'): string
 ```php
 use HalilCosdu\FineTuner\Facades\FineTuner;
 
-FineTuner::generateExamples("A versatile AI assistant designed to provide personalized support across all aspects of life, from physical health and mental wellness to emotional well-being, adapting its guidance to the user's unique situation and needs. It offers practical advice, empathetic support, and proactive reminders, all while ensuring privacy and security, and continuously evolving through feedback and research.")
+// Generate examples for fine-tuning
+$trainingExamples = FineTuner::generateExamples("A versatile AI assistant designed to provide personalized support across all aspects of life, from physical health and mental wellness to emotional well-being, adapting its guidance to the user's unique situation and needs. It offers practical advice, empathetic support, and proactive reminders, all while ensuring privacy and security, and continuously evolving through feedback and research.")
+
+// If the `FINE_TUNER_USE_STORAGE` environment variable is set to `true`, the `file_url` will be returned for the upload function. Alternatively, you can create your own training `.jsonl` file using the `training_data`.
+
+// Upload the training data
+$fileId = FineTuner::upload($trainingExamples['file_url'])
+
+// Fine-tune the model
+FineTuner::fineTune($fileId, 'gpt-3.5-turbo')
 ```
 
 ## Testing

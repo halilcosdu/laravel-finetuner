@@ -7,7 +7,7 @@ use Illuminate\Support\Sleep;
 use OpenAI as OpenAIFactory;
 use OpenAI\Client;
 
-class FineTuner
+readonly class FineTuner
 {
     public Client $client;
 
@@ -98,11 +98,14 @@ class FineTuner
             }
         }
 
+        $url = null;
+
         if (config('finetuner.use_storage')) {
             Storage::disk(config('finetuner.storage.disk'))->put('training_data.jsonl', json_encode($trainingExamples));
+            $url = Storage::disk(config('finetuner.storage.disk'))->url('training_data.jsonl');
         }
 
-        return $trainingExamples;
+        return ['training_data' => $trainingExamples, 'file_url' => $url];
     }
 
     public function upload(string $file): string
