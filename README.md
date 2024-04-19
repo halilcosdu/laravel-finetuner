@@ -36,8 +36,16 @@ return [
 ## Usage
 
 ```php
-$fineTuner = new HalilCosdu\FineTuner();
-echo $fineTuner->echoPhrase('Hello, HalilCosdu!');
+use HalilCosdu\FineTuner\Facades\FineTuner;
+
+FineTuner::generateExamples($prompt, $temperature = .4, $numberOfExamples = 2): array
+FineTuner::upload(string $file): string
+FineTuner::fineTune(string $fileId, string $model = 'gpt-3.5-turbo'): string
+```
+```php
+use HalilCosdu\FineTuner\Facades\FineTuner;
+
+FineTuner::generateExamples("A versatile AI assistant designed to provide personalized support across all aspects of life, from physical health and mental wellness to emotional well-being, adapting its guidance to the user's unique situation and needs. It offers practical advice, empathetic support, and proactive reminders, all while ensuring privacy and security, and continuously evolving through feedback and research.")
 ```
 
 ## Testing
