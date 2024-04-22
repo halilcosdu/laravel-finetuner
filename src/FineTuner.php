@@ -4,6 +4,7 @@ namespace HalilCosdu\FineTuner;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Sleep;
+use Illuminate\Support\Str;
 use OpenAI as OpenAIFactory;
 use OpenAI\Client;
 
@@ -30,7 +31,8 @@ readonly class FineTuner
 
         if (count($prevExamples) > 0) {
             if (count($prevExamples) > 8) {
-                $prevExamples = array_rand($prevExamples, 8);
+                $keys = array_rand($prevExamples, 8);
+                $prevExamples = array_intersect_key($prevExamples, array_flip($keys));
             }
             foreach ($prevExamples as $example) {
                 $messages[] = [
@@ -49,7 +51,7 @@ readonly class FineTuner
         return $response->choices[0]->message->content;
     }
 
-    public function generateExamples($prompt, $temperature = .4, $numberOfExamples = 2): array
+    public function generateExamples($prompt, $temperature = .4, $numberOfExamples = 1): array
     {
         $prevExamples = [];
         for ($i = 0; $i < $numberOfExamples; $i++) {
@@ -59,6 +61,13 @@ readonly class FineTuner
         }
 
         return $this->saveTrainingExamples($prevExamples, $this->generateSystemMessage($prompt, $temperature));
+    }
+
+    public function save(array $data, string $fileName): string
+    {
+        Storage::disk(config('finetuner.storage.disk'))->put($fileName, json_encode($data));
+
+        return Storage::disk(config('finetuner.storage.disk'))->url($fileName);
     }
 
     private function generateSystemMessage($prompt, $temperature = .5): ?string
@@ -97,12 +106,18 @@ readonly class FineTuner
                 $trainingExamples[] = $trainingExample;
             }
         }
+        $fileName = Str::random(40).'.jsonl';
+
+        if (app()->runningInConsole()) {
+            return ['url' => $this->save($trainingExamples, $fileName)];
+        }
 
         $url = null;
 
         if (config('finetuner.use_storage')) {
-            Storage::disk(config('finetuner.storage.disk'))->put('training_data.jsonl', json_encode($trainingExamples));
-            $url = Storage::disk(config('finetuner.storage.disk'))->url('training_data.jsonl');
+            $fileName = Str::random(40).'.jsonl';
+            Storage::disk(config('finetuner.storage.disk'))->put($fileName, json_encode($trainingExamples));
+            $url = Storage::disk(config('finetuner.storage.disk'))->url($fileName);
         }
 
         return ['training_data' => $trainingExamples, 'file_url' => $url];

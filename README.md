@@ -48,6 +48,54 @@ use HalilCosdu\FineTuner\Facades\FineTuner;
 // Generate examples for fine-tuning
 $trainingExamples = FineTuner::generateExamples("A versatile AI assistant designed to provide personalized support across all aspects of life, from physical health and mental wellness to emotional well-being, adapting its guidance to the user's unique situation and needs. It offers practical advice, empathetic support, and proactive reminders, all while ensuring privacy and security, and continuously evolving through feedback and research.")
 
+array:2 [▼
+  "training_data" => array:1 [▼
+    0 => array:1 [▼
+      "messages" => array:3 [▼
+        0 => array:2 [▼
+          "role" => "system"
+          "content" => "Given your current situation and needs, how can I assist you today?"
+        ]
+        1 => array:2 [▼
+          "role" => "user"
+          "content" => "Hey AI, I've been feeling really stressed out lately because of work. Any advice on how I can manage this better?"
+        ]
+        2 => array:2 [▼
+          "role" => "assistant"
+          "content" => """
+            I'm really sorry to hear that you're feeling this way, but please know that it's okay to feel stressed. Here are a few suggestions that might help:
+
+            
+
+            1. Mindfulness and Relaxation: Try techniques like deep breathing, meditation, or yoga. They can help you to stay calm and focused.
+
+            
+
+            2. Time Management: Prioritize your tasks and break them down into manageable chunks. Remember, it's okay to say no to tasks that are not a priority.
+
+            
+
+            3. Physical Activity: Regular exercise can help reduce stress levels. Even a short walk can make a difference.
+
+            
+
+            4. Connect with Others: Talk to someone you trust about your stress. It can often help to share what you're experiencing.
+
+            
+
+            5. Professional Help: If your stress continues or leads to feelings of despair, it might be helpful to speak with a mental health professional.
+
+            
+
+            Remember, everyone experiences stress differently and different techniques work for different people. It's important to find what works best for you.
+            """
+        ]
+      ]
+    ]
+  ]
+  "file_url" => null
+]
+
 // If the `FINE_TUNER_USE_STORAGE` environment variable is set to `true`, the `file_url` will be returned for the upload function. Alternatively, you can create your own training `.jsonl` file using the `training_data`.
 
 // Upload the training data
@@ -55,6 +103,34 @@ $fileId = FineTuner::upload($trainingExamples['file_url'])
 
 // Fine-tune the model
 FineTuner::fineTune($fileId, 'gpt-3.5-turbo')
+```
+
+The `php artisan laravel-finetuner` command is used to interact with the Laravel Finetuner package. This command initiates a process that generates examples.
+
+Here's a detailed explanation of how to use this command:
+
+1. Open your terminal.
+
+2. Navigate to your Laravel project directory.
+
+3. Run the command `php artisan laravel-finetuner`.
+
+4. The command will first ask for a `Prompt`. This is a string that will be used to generate examples for fine-tuning. If you don't provide a prompt, it will use a default one.
+
+5. Next, it will ask for the `Temperature`. This is a float value that controls the randomness of the examples generated. A higher value will result in more random examples. If you don't provide a temperature, it will use a default value of `.4`.
+
+6. Then, it will ask for the `Number of examples`. This is an integer that specifies how many examples to generate. If you don't provide a number, it will use a default value of `1`.
+
+7. After you've provided these inputs, the command will ask for your confirmation to continue. If you confirm, it will start generating examples, which may take a while.
+
+8. Once the examples are generated, they will be uploaded. If there's an error during this process, the command will display an error message.
+
+9. If everything goes well, the command will display a URL. This URL points to the location where the generated examples were uploaded.
+
+Remember, this command is part of the Laravel Finetuner package, which is designed to automate the fine-tuning of OpenAI models in Laravel applications.
+
+```php
+php artisan laravel-finetuner
 ```
 
 ## Testing
