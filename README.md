@@ -48,53 +48,32 @@ use HalilCosdu\FineTuner\Facades\FineTuner;
 // Generate examples for fine-tuning
 $trainingExamples = FineTuner::generateExamples("A versatile AI assistant designed to provide personalized support across all aspects of life, from physical health and mental wellness to emotional well-being, adapting its guidance to the user's unique situation and needs. It offers practical advice, empathetic support, and proactive reminders, all while ensuring privacy and security, and continuously evolving through feedback and research.")
 
-array:2 [▼
-  "training_data" => array:1 [▼
-    0 => array:1 [▼
-      "messages" => array:3 [▼
-        0 => array:2 [▼
-          "role" => "system"
-          "content" => "Given your current situation and needs, how can I assist you today?"
-        ]
-        1 => array:2 [▼
-          "role" => "user"
-          "content" => "Hey AI, I've been feeling really stressed out lately because of work. Any advice on how I can manage this better?"
-        ]
-        2 => array:2 [▼
-          "role" => "assistant"
-          "content" => """
-            I'm really sorry to hear that you're feeling this way, but please know that it's okay to feel stressed. Here are a few suggestions that might help:
-
-            
-
-            1. Mindfulness and Relaxation: Try techniques like deep breathing, meditation, or yoga. They can help you to stay calm and focused.
-
-            
-
-            2. Time Management: Prioritize your tasks and break them down into manageable chunks. Remember, it's okay to say no to tasks that are not a priority.
-
-            
-
-            3. Physical Activity: Regular exercise can help reduce stress levels. Even a short walk can make a difference.
-
-            
-
-            4. Connect with Others: Talk to someone you trust about your stress. It can often help to share what you're experiencing.
-
-            
-
-            5. Professional Help: If your stress continues or leads to feelings of despair, it might be helpful to speak with a mental health professional.
-
-            
-
-            Remember, everyone experiences stress differently and different techniques work for different people. It's important to find what works best for you.
-            """
-        ]
+```
+```json
+{
+  "training_data": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "Given your current situation and needs, how can I assist you today?"
+        },
+        {
+          "role": "user",
+          "content": "Hey AI, I've been feeling really stressed out lately because of work. Any advice on how I can manage this better?"
+        },
+        {
+          "role": "assistant",
+          "content": "I'm really sorry to hear that you're feeling this way, but please know that it's okay to feel stressed. Here are a few suggestions that might help:\n\n1. Mindfulness and Relaxation: Try techniques like deep breathing, meditation, or yoga. They can help you to stay calm and focused.\n\n2. Time Management: Prioritize your tasks and break them down into manageable chunks. Remember, it's okay to say no to tasks that are not a priority.\n\n3. Physical Activity: Regular exercise can help reduce stress levels. Even a short walk can make a difference.\n\n4. Connect with Others: Talk to someone you trust about your stress. It can often help to share what you're experiencing.\n\n5. Professional Help: If your stress continues or leads to feelings of despair, it might be helpful to speak with a mental health professional.\n\nRemember, everyone experiences stress differently and different techniques work for different people. It's important to find what works best for you."
+        }
       ]
-    ]
-  ]
-  "file_url" => null
-]
+    }
+  ],
+  "file_url": null
+}
+```
+
+```php
 
 // If the `FINE_TUNER_USE_STORAGE` environment variable is set to `true`, the `file_url` will be returned for the upload function. Alternatively, you can create your own training `.jsonl` file using the `training_data`.
 
