@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-finetuner` will be documented in this file.
 
+## v1.0.3 - 2024-04-23
+
+Version 1.0.2 of the Laravel Finetuner package includes the following updates:
+
+**IoC Container Bind**: The FineTuner class is now registered in Laravel's service container (IoC container) in the FineTunerServiceProvider. This allows it to be resolved out of the container elsewhere in your application, enhancing the flexibility and usability of the package.
+
+**Readme Update**: The README.md file has been updated to provide more detailed instructions on how to use the php artisan laravel-finetuner command. This includes a step-by-step guide on how to generate examples, upload them, and start a fine-tuning job with Laravel Finetuner.
+
 ## v1.0.2 - 2024-04-22
 
 Release v1.0.2 of the Laravel Finetuner package includes the following changes:
