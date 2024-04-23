@@ -5,23 +5,16 @@ namespace HalilCosdu\FineTuner;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
-use OpenAI as OpenAIFactory;
 use OpenAI\Client;
 
-readonly class FineTuner
+class FineTuner
 {
-    public Client $client;
-
-    public function __construct()
+    public function __construct(public Client $client)
     {
-        $this->client = OpenAIFactory::factory()
-            ->withApiKey(config('finetuner.api_key'))
-            ->withOrganization(config('finetuner.organization'))
-            ->withHttpClient(new \GuzzleHttp\Client(['timeout' => config('finetuner.request_timeout', 600)]))
-            ->make();
+        //
     }
 
-    private function example($prompt, $prevExamples, $temperature = .5): ?string
+    private function example(string $prompt, array $prevExamples, float $temperature = .5): ?string
     {
         $messages = [
             [
@@ -51,11 +44,11 @@ readonly class FineTuner
         return $response->choices[0]->message->content;
     }
 
-    public function generateExamples($prompt, $temperature = .4, $numberOfExamples = 1): array
+    public function generateExamples(string $prompt, float $temperature = .4, int $numberOfExamples = 1): array
     {
         $prevExamples = [];
         for ($i = 0; $i < $numberOfExamples; $i++) {
-            Sleep::sleep(0.1);
+            Sleep::sleep(config('finetuner.sleep_seconds', .1));
             $example = $this->example($prompt, $prevExamples, $temperature);
             $prevExamples[] = $example;
         }
@@ -70,7 +63,7 @@ readonly class FineTuner
         return Storage::disk(config('finetuner.storage.disk'))->url($fileName);
     }
 
-    private function generateSystemMessage($prompt, $temperature = .5): ?string
+    private function generateSystemMessage(string $prompt, float $temperature = .5): ?string
     {
         $response = $this->client->chat()->create([
             'model' => 'gpt-4',
@@ -90,7 +83,7 @@ readonly class FineTuner
         return $response->choices[0]->message->content;
     }
 
-    private function saveTrainingExamples($prevExamples, $systemMessage): array
+    private function saveTrainingExamples(array $prevExamples, string $systemMessage): array
     {
         $trainingExamples = [];
         foreach ($prevExamples as $example) {
