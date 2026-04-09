@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-finetuner` will be documented in this file.
 
+## v1.1.0 - 2026-04-09
+
+### What's Changed
+
+* Added Laravel 12 and Laravel 13 support
+* Updated dev dependencies for broader version compatibility (Pest 3, PHPStan 2, Larastan 3, Orchestra Testbench 10/11)
+* Updated CI workflow to test against Laravel 13, 12, 11 with PHP 8.3, 8.2
+* Package now supports Laravel 10.x, 11.x, 12.x, and 13.x
+
 ## v1.0.3 - 2024-04-23
 
 Version 1.0.2 of the Laravel Finetuner package includes the following updates:
